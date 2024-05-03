@@ -11,12 +11,10 @@ import java.util.Objects;
 public class Student {
 
     @jakarta.persistence.Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID Id;
     
     private String firstName;
     private String lastName;
-    private String email;
     private String status;
     private String ssn;
     private int age;
@@ -24,11 +22,10 @@ public class Student {
     public Student() {
     }
 
-    public Student(UUID Id, String firstName, String lastName, String email, String status, String ssn, int age) {
+    public Student(UUID Id, String firstName, String lastName, String status, String ssn, int age) {
         this.Id = Id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
         this.status = status;
         this.ssn = ssn;
         this.age = age;
@@ -56,14 +53,6 @@ public class Student {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return this.email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getStatus() {
@@ -105,10 +94,6 @@ public class Student {
         return this;
     }
 
-    public Student email(String email) {
-        setEmail(email);
-        return this;
-    }
 
     public Student status(String status) {
         setStatus(status);
@@ -133,12 +118,12 @@ public class Student {
             return false;
         }
         Student student = (Student) o;
-        return Objects.equals(Id, student.Id) && Objects.equals(firstName, student.firstName) && Objects.equals(lastName, student.lastName) && Objects.equals(email, student.email) && Objects.equals(status, student.status) && Objects.equals(ssn, student.ssn) && age == student.age;
+        return Objects.equals(Id, student.Id) && Objects.equals(firstName, student.firstName) && Objects.equals(lastName, student.lastName) && Objects.equals(status, student.status) && Objects.equals(ssn, student.ssn) && age == student.age;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(Id, firstName, lastName, email, status, ssn, age);
+        return Objects.hash(Id, firstName, lastName, status, ssn, age);
     }
 
     @Override
@@ -147,7 +132,6 @@ public class Student {
             " Id='" + getId() + "'" +
             ", firstName='" + getFirstName() + "'" +
             ", lastName='" + getLastName() + "'" +
-            ", email='" + getEmail() + "'" +
             ", status='" + getStatus() + "'" +
             ", ssn='" + getSsn() + "'" +
             ", age='" + getAge() + "'" +
