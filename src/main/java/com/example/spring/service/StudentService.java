@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.spring.dto.StudentRequestDTO;
@@ -17,6 +18,9 @@ public class StudentService {
 
     @Autowired
     private StudentRepository studentRepository;
+    
+    @Autowired
+    private StudentMapper studentMapper;
 
     public StudentResponseDTO createStudent(StudentRequestDTO studentRequestDTO) {
         
@@ -30,11 +34,10 @@ public class StudentService {
         
     }
 
-    public Optional<Student> readStudent(UUID Id) {
+    public Optional<StudentResponseDTO> readStudent(UUID id) {
         
+        return studentRepository.findById(id)
+        .map(student -> studentMapper.toStudentResponseDTO(student));
 
-        return studentRepository.findById(Id);
-        
     }
-    
 }

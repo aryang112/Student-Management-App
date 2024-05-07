@@ -1,5 +1,6 @@
 package com.example.spring.controller;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.apache.catalina.connector.Response;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.spring.dto.StudentRequestDTO;
 import com.example.spring.dto.StudentResponseDTO;
+import com.example.spring.repository.StudentRepository;
 import com.example.spring.service.StudentService;
 
 import jakarta.websocket.server.PathParam;
@@ -45,12 +47,12 @@ public class Controller {
 
     @GetMapping(value = "/readStudent/{Id}",
     produces = ("application/json"))
-    public ResponseEntity<?> readStudent(@PathVariable UUID Id) {
-        
-        return studentService.readStudent(Id)
-                             .map(student -> ResponseEntity.ok(student))
-                             .orElseGet(() -> ResponseEntity.notFound().build());
-
+    public ResponseEntity<StudentResponseDTO> readStudent(@PathVariable UUID Id) {
+        Optional<StudentResponseDTO> optionalStudentDTO = studentService.readStudent(Id);
+        if (optionalStudentDTO.isPresent()) {
+            return ResponseEntity.ok().body(optionalStudentDTO.get());
+        }
+        return ResponseEntity.notFound().build();
     }
     
     
