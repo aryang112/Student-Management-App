@@ -38,6 +38,10 @@ public class StudentService {
         
         return studentRepository.findById(id)
         .map(student -> studentMapper.toStudentResponseDTO(student));
+    }
 
+    public StudentResponseDTO updateStudent(StudentRequestDTO studentRequestDTO) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'updateStudent'");
     }
 }
