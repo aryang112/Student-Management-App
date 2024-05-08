@@ -3,6 +3,7 @@ package com.example.spring.dto;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 
 import jakarta.annotation.PostConstruct;
 import java.util.Objects;
@@ -14,6 +15,7 @@ public class StudentRequestDTO {
     @NotBlank
     private String lastName;
     @NotBlank
+    @Size(min = 9, max = 9, message = "Invalid SSN")
     private String ssn;
     @NotNull@Positive
     private int age;

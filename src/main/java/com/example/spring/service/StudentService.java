@@ -3,9 +3,11 @@ package com.example.spring.service;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.example.spring.dto.StudentRequestDTO;
 import com.example.spring.dto.StudentResponseDTO;
@@ -38,6 +40,30 @@ public class StudentService {
         
         return studentRepository.findById(id)
         .map(student -> studentMapper.toStudentResponseDTO(student));
+    }
+
+    public StudentResponseDTO getStudent(UUID id) {
+
+        Optional<Student> studentOptional = studentRepository.findById(id);
+        StudentResponseDTO studentResponseDTO = null;
+
+        if (studentOptional.isPresent()) {
+            studentResponseDTO = new StudentResponseDTO();
+            Student student = studentOptional.get();
+
+            //mapping
+            studentResponseDTO = studentMapper.toStudentResponseDTO(student);
+        }
+        
+        return studentResponseDTO;
+
+    }
+
+    public boolean isDataValid(StudentRequestDTO studentRequestDTO) {
+
+        String firstName = studentRequestDTO.getFirstName();
+        String ssn = studentRequestDTO.getSsn();
+        return (StringUtils.hasLength(ssn) || StringUtils.hasLength(firstName));
     }
 
     public StudentResponseDTO updateStudent(StudentRequestDTO studentRequestDTO) {
