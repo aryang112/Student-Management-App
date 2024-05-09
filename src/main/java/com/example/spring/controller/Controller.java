@@ -57,6 +57,11 @@ public class Controller {
             return responseEntityFactory.create(HttpStatus.BAD_REQUEST);
         }
 
+        if (studentService.doesStudentExistbyPII(studentRequestDTO.getSsn())) {
+
+            return responseEntityFactory.create(HttpStatus.METHOD_NOT_ALLOWED);
+        }
+
         // Else proceed to create the student
         StudentResponseDTO studentResponseDTO = studentService.createStudent(studentRequestDTO);
 

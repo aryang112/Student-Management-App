@@ -106,4 +106,11 @@ public class StudentService {
         }
         studentRepository.deleteById(id);
     }
+
+    public boolean doesStudentExistbyPII(String ssn) {
+
+        Optional<Student> studentOptional = studentRepository.findByssn(ssn);
+        return studentOptional.isPresent();
+
+    }
 }
