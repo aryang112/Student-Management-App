@@ -3,6 +3,9 @@ package com.example.spring.service;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.management.RuntimeErrorException;
+import javax.swing.text.html.Option;
+
 import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -63,11 +66,34 @@ public class StudentService {
 
         String firstName = studentRequestDTO.getFirstName();
         String ssn = studentRequestDTO.getSsn();
-        return (StringUtils.hasLength(ssn) || StringUtils.hasLength(firstName));
+        return (StringUtils.hasLength(ssn) && StringUtils.hasLength(firstName));
     }
 
-    public StudentResponseDTO updateStudent(StudentRequestDTO studentRequestDTO) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateStudent'");
+    public void updateStudent(UUID id, StudentRequestDTO studentRequestDTO) {
+        
+        Optional<Student> studentOptional = studentRepository.findById(id);
+
+        if (studentOptional.isEmpty()) {
+
+            throw new RuntimeException("Student was not found with the given Id: " + id);
+        }
+        Student student = studentOptional.get();
+
+        //mapping
+        student.setAge(studentRequestDTO.getAge());
+        student.setFirstName(studentRequestDTO.getFirstName());
+        student.setLastName(studentRequestDTO.getLastName());
+        student.setSsn(studentRequestDTO.getSsn());
+
+        studentRepository.save(student);
+        
+        
+    }
+
+    public boolean doesStudentExist(UUID id) {
+        
+        Optional<Student> studentOptional = studentRepository.findById(id);
+        return studentOptional.isPresent();
+
     }
 }

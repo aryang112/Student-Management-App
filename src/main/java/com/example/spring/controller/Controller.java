@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.service.annotation.PutExchange;
 
 import com.example.spring.dto.StudentRequestDTO;
 import com.example.spring.dto.StudentResponseDTO;
@@ -19,12 +20,14 @@ import com.example.spring.http.ResponseEntityFactory;
 import com.example.spring.repository.StudentRepository;
 import com.example.spring.service.StudentService;
 
+import jakarta.persistence.Id;
 import jakarta.websocket.server.PathParam;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
@@ -52,6 +55,7 @@ public class Controller {
         if (!studentService.isDataValid(studentRequestDTO)) {
             return responseEntityFactory.create(HttpStatus.BAD_REQUEST);
         }
+
         // Else proceed to create the student
         StudentResponseDTO studentResponseDTO = studentService.createStudent(studentRequestDTO);
 
@@ -72,6 +76,25 @@ public class Controller {
         return responseEntityFactory.create(studentResponseDTO, HttpStatus.OK);
     
     }
-    
+    @SuppressWarnings("unchecked")
+    @PutMapping(value = "/{Id}/updateStudent",
+    produces = {"application/json"})
+    public ResponseEntity<StudentResponseDTO> updateStudent(@PathVariable UUID Id, @RequestBody StudentRequestDTO studentRequestDTO) {        
+                
+        if (!studentService.isDataValid(studentRequestDTO)) {
+            return responseEntityFactory.create(HttpStatus.BAD_REQUEST);
+        }
+
+        if (!studentService.doesStudentExist(Id)) {
+
+            return responseEntityFactory.create(HttpStatus.NOT_FOUND);
+            
+        }
+
+        studentService.updateStudent(Id, studentRequestDTO);
+
+
+        return responseEntityFactory.create(HttpStatus.NO_CONTENT);
+    }
     
 }

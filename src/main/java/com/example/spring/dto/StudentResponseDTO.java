@@ -1,6 +1,9 @@
 package com.example.spring.dto;
 
 import java.util.UUID;
+
+import com.example.spring.model.Student;
+
 import java.util.Objects;
 
 public class StudentResponseDTO {
@@ -22,6 +25,10 @@ public class StudentResponseDTO {
         this.lastName = lastName;
         this.age = age;
         this.status = status;
+    }
+
+    public StudentResponseDTO(Student student) {
+        //TODO Auto-generated constructor stub
     }
 
     public UUID getId() {
