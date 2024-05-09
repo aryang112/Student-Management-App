@@ -96,4 +96,14 @@ public class StudentService {
         return studentOptional.isPresent();
 
     }
+
+    public void deleteStudent(UUID id) {
+
+        Optional<Student> studentOptional = studentRepository.findById(id);
+        if (studentOptional.isEmpty()) {
+
+            throw new RuntimeException("Student was not found with the given Id: " + id);
+        }
+        studentRepository.deleteById(id);
+    }
 }

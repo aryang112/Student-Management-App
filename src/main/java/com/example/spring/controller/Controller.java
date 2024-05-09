@@ -23,6 +23,7 @@ import com.example.spring.service.StudentService;
 import jakarta.persistence.Id;
 import jakarta.websocket.server.PathParam;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -87,12 +88,23 @@ public class Controller {
 
         if (!studentService.doesStudentExist(Id)) {
 
-            return responseEntityFactory.create(HttpStatus.NOT_FOUND);
-            
+            return responseEntityFactory.create(HttpStatus.NOT_FOUND); 
         }
-
         studentService.updateStudent(Id, studentRequestDTO);
 
+        return responseEntityFactory.create(HttpStatus.NO_CONTENT);
+    }
+
+    @SuppressWarnings("unchecked")
+    @DeleteMapping(value = "/{Id}/deleteStudent",
+    produces = {"application/json"})
+    public ResponseEntity<StudentResponseDTO> deleteStudent(@PathVariable UUID Id) {        
+
+        if (!studentService.doesStudentExist(Id)) {
+
+            return responseEntityFactory.create(HttpStatus.NOT_FOUND); 
+        }
+        studentService.deleteStudent(Id);
 
         return responseEntityFactory.create(HttpStatus.NO_CONTENT);
     }
